@@ -1,0 +1,9 @@
+Address is a 16 bit randomly generated key
+
+tx fees:
+    * proportional to no of active users
+    * proportionality constant = 0.0001
+
+
+create a databse to keep track of all the data that we have.
+Every time, we don't have to go check the blockchain to get the balance of the people.
