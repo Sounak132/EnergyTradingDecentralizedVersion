@@ -3,6 +3,7 @@ from ecdsa import SECP256k1 as curve_type
 from hashlib import sha256 as hash_function
 import sqlite3
 from time import time
+import random
 
 database_file = 'testdb.db'
 database_added = 0

@@ -71,6 +71,26 @@ class Transaction:
         print("Successfully validated signature\n")
         return flag
 
+    def to_mempool(self, mempool):
+        return mempool.push(self)
+
+class Mempool:
+    def __init__(self):
+        self.mempool = []
+    def push(self, transaction):
+        try:
+            self.mempool.append(transaction)
+            return True
+        except:
+            pass
+        return False
+
+    def pop(self):
+        return self.mempool.pop(0)
+
+    def empty(self):
+        return True if len(self.mempool) == 0 else False
+
 class Block:
     def __init__(self):
         self.list_of_transactions = []
@@ -84,8 +104,10 @@ class Block:
 
     def push_transaction(self, transaction):
         if transaction.validate_balance() and transaction.validate_signature():
-            print("Success")
+            # print("Success")
             self.list_of_transactions.append(transaction)
+            return True
+        return False
 
     def set_previous_key(self,previous_block_Key):
         self.previous_block_Key = previous_block_Key
@@ -112,7 +134,7 @@ class Block:
         for tx in self.list_of_transactions:
             f.write("Sender: {}\nReceiver: {}\nAmount: {}\n\n".format(tx.sender, tx.receiver, tx.amount))
         f.write("Block Reward: {}\nReceiver: {}\n\n".format(self.mining_reward, self.miner))
-        f.write("-:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:")
+        f.write("--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--:--")
         f.close()
 
 class BlockChain:
@@ -120,6 +142,7 @@ class BlockChain:
 
     def __init__(self, initiator_account):
         self.genesis_block = Block()
+        self.initiator_account = initiator_account
         self.tail_block = None
         self.length = 0
         self.mining_reward = genesys_reward
@@ -127,7 +150,7 @@ class BlockChain:
 
     def mine(self, block, miner):
         if(block != self.genesis_block and len(block.list_of_transactions) == 0):
-            return
+            return False
         block.set_mining_reward(self.mining_reward)
         block.set_miner(miner)
 
@@ -170,6 +193,7 @@ class BlockChain:
 
         conn.commit()
         conn.close()
+        return True
 
 
     def competetive_mine(block):
@@ -179,8 +203,8 @@ class BlockChain:
         """
         pass
 
-    def blockchain_to_text(self):
+    def get_text(self):
         temp = self.genesis_block
         while temp:
             temp.write_block_data()
-            temp = temp.next      
+            temp = temp.next  
