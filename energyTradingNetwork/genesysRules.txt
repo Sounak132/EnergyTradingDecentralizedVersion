@@ -7,3 +7,7 @@ tx fees:
 
 create a databse to keep track of all the data that we have.
 Every time, we don't have to go check the blockchain to get the balance of the people.
+
+# Mining reward
+Mining reward will start from 1024 energy coins and will be halved Every
+2M blocks

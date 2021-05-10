@@ -34,32 +34,11 @@ c = conn.cursor()
 
 # c.execute("INSERT INTO credentials VALUES('dgjbcfjeblfhbclifkje', 'eifvgbcelirufbdcilkhjnliudjc', 1.0987)")
 
-cur_address = "dgjbcfjeblfhbclifkje"
-c.execute("""
-        SELECT SUM(amount) 
-        FROM transactions
-        WHERE sender = :address;
-    """, {'address': cur_address})
-entry = c.fetchone()
-debit = entry
+c.execute("SELECT * FROM transactions")
 
+entries = c.fetchall()
+for e in entries:
+    print(e)
 
-c.execute("""
-        SELECT SUM(amount) 
-        FROM transactions
-        WHERE receiver = :address;
-    """, {'address': cur_address})
-entry = c.fetchone()
-credit = entry
-
-balance = credit[0] - debit[0]
-print("Balance of user: {} is {} ".format(cur_address, balance))
-
-# c.execute("SELECT * FROM credentials")
-
-# entry = c.fetchone()
-# print(entry, type(entry))
-
-
-conn.commit()
+# conn.commit()
 conn.close()
