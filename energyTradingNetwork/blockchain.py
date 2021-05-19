@@ -1,4 +1,6 @@
-from Modules import ecdsa, sqlite3, curve_type, hash_function, database_file, database_added, time, output_file_name, genesys_reward, halving_number, mining_reward
+from Modules import curve_type, hash_function, database_file, database_added, output_file_name, genesys_reward, halving_number, mining_reward
+import ecdsa, sqlite3
+from time import time
 
 class Transaction:
     def __init__(self, sender, receiver, amount):

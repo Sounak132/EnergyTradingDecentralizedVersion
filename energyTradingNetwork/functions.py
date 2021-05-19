@@ -1,5 +1,7 @@
-from Modules import ecdsa, sqlite3, curve_type, hash_function, database_file
+from Modules import curve_type, hash_function, database_file
+import ecdsa, sqlite3
 import blockchain as B
+from operator import attrgetter
 
 def generate_database():
     # declaring the global variables
@@ -49,3 +51,26 @@ def generate_keys():
     conn.commit()
     conn.close()
     return public_key_hex
+
+def to_time(run_time):
+    hour, _ = run_time.split('h')
+    minute, _ = _.split('m') 
+    second, _ = _.split('s') 
+    return int(hour)*3600 + int(minute)*60 + int(second)
+
+def average_minimum(obj_list, attr):
+    if len(obj_list) == 0:
+        return None, None, None
+    average_attr = 0
+    num = 0
+    getter = attrgetter(attr)
+    minimum = obj_list[0]
+    index = 0
+    for obj in obj_list:
+        cur_attr = getter(obj)
+        if cur_attr < getter(minimum):
+            minimum = obj
+            index = num
+        average_attr += getter(obj)
+        num += 1
+    return average_attr/num, minimum, index
